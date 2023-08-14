@@ -2,6 +2,8 @@
 
 YourTube is an innovative video downloader that allows you to effortlessly capture and save your favorite multimedia content from YouTube. With a range of impressive features, YourTube provides a seamless experience for downloading both MP3 and MP4 files directly from YouTube playlists.
 
+![YourTube](https://github.com/Tiegertropfen119-0001/v2-yourtube-youtube-video-downloader/raw/main/scrn/YourTube_rK0ynVyndo.png)
+
 ## Features
 
 - Download support for a wide range of resolutions, from 144p to 4k, ensuring you get the quality you desire.
