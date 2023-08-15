@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using System.Net;
+using System.Diagnostics;
 
 namespace YourTube
 {
@@ -22,7 +23,7 @@ namespace YourTube
 
         private void textBox1_Click(object sender, EventArgs e)
         {
-            if(textBox1.Text == "Youtube Url")
+            if (textBox1.Text == "Youtube Url")
             {
                 textBox1.Text = "";
                 textBox1.ForeColor = Color.Gray;
@@ -37,17 +38,17 @@ namespace YourTube
             }
             catch
             {
-                
+
             }
             tx_cmdstring.Text = "";
             tx_cmdstring.Text += " ";
             tx_cmdstring.Text += textBox1.Text;
-           
-        
+
+
             if (comboBox1.Text == "Playlist Yes")
             {
                 tx_cmdstring.Text += " --yes-playlist";
-              
+
 
             }
             else
@@ -57,7 +58,7 @@ namespace YourTube
             if (comboBox2.Text == "MP3")
             {
                 tx_cmdstring.Text += " --audio-format mp3 -x";
-               
+
 
             }
             else
@@ -94,7 +95,7 @@ namespace YourTube
                 }
 
             }
-           
+
 
             if (comboBox3.Text == "ID")
             {
@@ -108,10 +109,11 @@ namespace YourTube
             {
                 tx_cmdstring.Text += " -o %(title)s.%(ext)s.%(id)s";
             }
-            if(comboBox5.Text == "Add Thumbnail")
+            if (comboBox5.Text == "Add Thumbnail")
             {
                 tx_cmdstring.Text += " --embed-thumbnail";
-            }else if (comboBox5.Text == "Add Metadata")
+            }
+            else if (comboBox5.Text == "Add Metadata")
             {
                 tx_cmdstring.Text += " --embed-metadata";
                 tx_cmdstring.Text += " --xattrs";
@@ -125,11 +127,13 @@ namespace YourTube
 
             tx_cmdstring.Text += " --geo-bypass ";
             textBox2.Text = tx_cmdstring.Text;
+            deletejunk.Start();
 
             string strCmdText;
             strCmdText = tx_cmdstring.Text;
-                 System.Diagnostics.Process.Start("yt-dlp.exe", strCmdText);
-            }
+            System.Diagnostics.Process.Start("yt-dlp.exe", strCmdText);
+        }
+
         private void checkfiles()
         {
             File.Delete("youtube-dl.exe");
@@ -142,7 +146,8 @@ namespace YourTube
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            checkfiles(); 
+            deletejunk.Start();
+            checkfiles();
             toolTip1.SetToolTip(this.button1, "Download file or playlist");
             toolTip1.SetToolTip(this.textBox2, "yt-dlp.exe string");
             toolTip1.SetToolTip(this.textBox1, "Video or playlist url");
@@ -172,7 +177,7 @@ namespace YourTube
 
         private void comboBox2_TextUpdate(object sender, EventArgs e)
         {
-           
+
         }
 
         private void comboBox2_Click(object sender, EventArgs e)
@@ -210,7 +215,7 @@ namespace YourTube
             Clipboard.SetText(tx_cmdstring.Text);
         }
 
-      private void movefiles()
+        private void movefiles()
         {
             string paths = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
@@ -253,6 +258,17 @@ namespace YourTube
                 }
                 catch
                 {
+                    try
+                    {
+                        Directory.CreateDirectory("files");
+                        Directory.CreateDirectory("files\\mp3");
+                        Directory.CreateDirectory("files\\mp4");
+                        Directory.CreateDirectory("files\\webm");
+                    }
+                    catch
+                    {
+
+                    }
                 }
 
             }
@@ -262,7 +278,7 @@ namespace YourTube
         public int webmc = 0;
         private void count()
         {
-           
+
             string paths = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
 
@@ -271,48 +287,57 @@ namespace YourTube
             //label1.Text = label1.Text.Replace("\\", "/");
             string filepath = label1.Text;
             DirectoryInfo d = new DirectoryInfo(filepath);
-            DirectoryInfo mp3 = new DirectoryInfo (filepath + "\\files\\mp3\\");
+            DirectoryInfo mp3 = new DirectoryInfo(filepath + "\\files\\mp3\\");
             DirectoryInfo mp4 = new DirectoryInfo(filepath + "\\files\\mp4\\");
             DirectoryInfo webm = new DirectoryInfo(filepath + "\\files\\webm\\");
 
-            foreach (var file in mp3.GetFiles("*.mp3"))
+            try
             {
-                try
+                foreach (var file in mp3.GetFiles("*.mp3"))
                 {
-                    mp3c++;
-                    label4.Text = mp3c.ToString();
-                  
-                }
-                catch
-                {
+                    try
+                    {
+                        mp3c++;
+                        label4.Text = mp3c.ToString();
+                        Console.WriteLine("MP3 COUNT " + mp3c);
+
+                    }
+                    catch
+                    {
+                    }
+
                 }
 
+                foreach (var file in mp4.GetFiles("*.mp4"))
+                {
+                    try
+                    {
+                        mp4c++;
+                        label7.Text = mp4c.ToString();
+                        Console.WriteLine("MP4 COUNT " + mp4c);
+                    }
+                    catch
+                    {
+                    }
+
+                }
+
+                foreach (var file in webm.GetFiles("*.webm"))
+                {
+                    try
+                    {
+                        webmc++;
+                        label8.Text = webmc.ToString();
+                        Console.WriteLine("WEBM COUNT " + webmc);
+                    }
+                    catch
+                    {
+                    }
+
+                }
             }
-
-            foreach (var file in mp4.GetFiles("*.mp4"))
-            {
-                try
-                {
-                    mp4c++;
-                    label7.Text = mp4c.ToString();
-                }
-                catch
-                {
-                }
-
-            }
-
-            foreach (var file in webm.GetFiles("*.webm"))
-            {
-                try
-                {
-                    webmc++;
-                    label8.Text = webmc.ToString();
-                }
-                catch
-                {
-                }
-
+            catch {
+            
             }
         }
 
@@ -327,7 +352,7 @@ namespace YourTube
             {
 
             }
-            
+
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
@@ -342,7 +367,7 @@ namespace YourTube
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBox1.Checked == false)
+            if (checkBox1.Checked == false)
             {
                 timer1.Stop();
 
@@ -355,12 +380,7 @@ namespace YourTube
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            movefiles();
-
-            webmc = 0;
-            mp4c = 0;
-            mp3c = 0;
-            count();
+          
         }
 
         private void button2_Click_1(object sender, EventArgs e)
@@ -370,7 +390,7 @@ namespace YourTube
 
         private void button2_Click_2(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("explorer.exe", label1.Text+ @"files\mp3");
+            System.Diagnostics.Process.Start("explorer.exe", label1.Text + @"files\mp3");
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -388,5 +408,83 @@ namespace YourTube
             System.Diagnostics.Process.Start("https://github.com/GyanD/codexffmpeg/releases/tag/6.0");
             MessageBox.Show("Download ffmpeg full build for windows and paste the ffmpeg.exe from bin folder into the YourTube folder");
         }
+
+        private void deletejunk_Tick(object sender, EventArgs e)
+        {
+            string processName = "yt-dlp";
+
+            if (IsProcessRunning(processName))
+            {
+                Console.WriteLine($"{processName} is running.");
+                progressBar1.Show();
+            }
+            else
+            {
+                Console.WriteLine($"{processName} is not running.");
+                progressBar1.Hide();
+                movefiles();
+
+                webmc = 0;
+                mp4c = 0;
+                mp3c = 0;
+                count();
+                if (checkBox2.Checked == true)
+                {
+                    string executableDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    DeletePngFiles(executableDirectory);
+
+                    Console.WriteLine("PNG files in the executable directory deleted.");
+                    DeleteWebpFiles(executableDirectory);
+                    Console.WriteLine("WEBP files in the executable directory deleted.");
+                }
+                else
+                {
+
+                }
+            }
+        }
+        static void DeletePngFiles(string directory)
+        {
+            try
+            {
+                string[] pngFiles = Directory.GetFiles(directory, "*.png");
+
+                foreach (string pngFilePath in pngFiles)
+                {
+                    File.Delete(pngFilePath);
+                    Console.WriteLine($"Deleted: {pngFilePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+        static void DeleteWebpFiles(string directory)
+        {
+            try
+            {
+                string[] pngFiles = Directory.GetFiles(directory, "*.webp");
+
+                foreach (string pngFilePath in pngFiles)
+                {
+                    File.Delete(pngFilePath);
+                    Console.WriteLine($"Deleted: {pngFilePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+
+        static bool IsProcessRunning(string processName)
+        {
+            Process[] processes = Process.GetProcessesByName(processName);
+            return processes.Length > 0;
+        }
+
     }
 }
+
+

@@ -7,3 +7,4 @@ C:\Users\ianka\source\repos\YourTube\YourTube\obj\Debug\YourTube.csproj.Generate
 C:\Users\ianka\source\repos\YourTube\YourTube\obj\Debug\YourTube.csproj.CoreCompileInputs.cache
 C:\Users\ianka\source\repos\YourTube\YourTube\obj\Debug\YourTube.exe
 C:\Users\ianka\source\repos\YourTube\YourTube\obj\Debug\YourTube.pdb
+C:\Users\ianka\source\repos\YourTube\YourTube\obj\Debug\YourTube.csproj.AssemblyReference.cache
